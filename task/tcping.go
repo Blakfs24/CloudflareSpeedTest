@@ -17,12 +17,16 @@ const (
 	defaultRoutines   = 200
 	defaultPort       = 443
 	defaultPingTimes  = 4
+	defaultTestIP     = false
+	defaultTestIPNum  = 200
 )
 
 var (
-	Routines      = defaultRoutines
-	TCPPort   int = defaultPort
-	PingTimes int = defaultPingTimes
+	Routines       = defaultRoutines
+	TCPPort   int  = defaultPort
+	PingTimes int  = defaultPingTimes
+	TestIPNum int  = defaultTestIPNum
+	TestIP    bool = defaultTestIP
 )
 
 type Ping struct {
@@ -48,7 +52,7 @@ func checkPingDefault() {
 
 func NewPing() *Ping {
 	checkPingDefault()
-	ips := loadIPRanges()
+	ips := loadIPRanges(TestIP, TestIPNum)
 	return &Ping{
 		wg:      &sync.WaitGroup{},
 		m:       &sync.Mutex{},

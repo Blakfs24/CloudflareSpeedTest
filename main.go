@@ -27,6 +27,8 @@ https://github.com/XIU2/CloudflareSpeedTest
 参数：
     -n 200
         延迟测速线程；越多延迟测速越快，性能弱的设备 (如路由器) 请勿太高；(默认 200 最多 1000)
+	-tn 200
+		延迟测速IP数量；延迟测速时随机选取的 IP 数量；(默认 200 个)
     -t 4
         延迟测速次数；单个 IP 延迟测速的次数；(默认 4 次)
     -dn 10
@@ -76,6 +78,8 @@ https://github.com/XIU2/CloudflareSpeedTest
 	var minDelay, maxDelay, downloadTime int
 	var maxLossRate float64
 	flag.IntVar(&task.Routines, "n", 200, "延迟测速线程")
+	flag.BoolVar(&task.TestIP, "tt", false, "延迟测速IP数量")
+	flag.IntVar(&task.TestIPNum, "tn", 200, "延迟测速IP数量")
 	flag.IntVar(&task.PingTimes, "t", 4, "延迟测速次数")
 	flag.IntVar(&task.TestCount, "dn", 10, "下载测速数量")
 	flag.IntVar(&downloadTime, "dt", 10, "下载测速时间")

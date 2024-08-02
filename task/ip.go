@@ -25,6 +25,27 @@ func InitRandSeed() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+// RandomSelect 从给定的列表中随机选择 n 个元素
+func RandomSelect[T any](list []T, n int) []T {
+	if n >= len(list) {
+		return list
+	}
+
+	// 创建一个随机数生成器
+	rand.Seed(time.Now().UnixNano())
+
+	// 创建一个拷贝，以免修改原始列表
+	copiedList := append([]T(nil), list...)
+
+	// 使用 Fisher-Yates 洗牌算法
+	for i := len(copiedList) - 1; i > 0; i-- {
+		j := rand.Intn(i + 1)
+		copiedList[i], copiedList[j] = copiedList[j], copiedList[i]
+	}
+
+	return copiedList[:n]
+}
+
 func isIPv4(ip string) bool {
 	return strings.Contains(ip, ".")
 }
@@ -147,7 +168,7 @@ func (r *IPRanges) chooseIPv6() {
 	}
 }
 
-func loadIPRanges() []*net.IPAddr {
+func loadIPRanges(sample bool, num int) []*net.IPAddr {
 	ranges := newIPRanges()
 	if IPText != "" { // 从参数中获取 IP 段数据
 		IPs := strings.Split(IPText, ",") // 以逗号分隔为数组并循环遍历
@@ -186,5 +207,9 @@ func loadIPRanges() []*net.IPAddr {
 			}
 		}
 	}
-	return ranges.ips
+	if sample {
+		return RandomSelect(ranges.ips, num)
+	} else {
+		return ranges.ips
+	}
 }
